@@ -49,7 +49,8 @@ class SubredditList extends React.Component {
                     height: '100vh',
                     width:'100%',
                     backgroundColor: '#1D2229',
-                    borderRadius: 0
+                    borderRadius: 0,
+                    overflow:'auto'
                 }}
 
             >
