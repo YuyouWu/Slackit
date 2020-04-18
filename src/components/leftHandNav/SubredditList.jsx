@@ -22,7 +22,7 @@ class SubredditList extends React.Component {
                 inverted
                 vertical
                 borderless
-                style={{ height: '100vh' }}
+                style={{ height: '100vh', backgroundColor: '#1D2229' }}
 
             >
                 <Menu.Item>
@@ -31,6 +31,7 @@ class SubredditList extends React.Component {
                 <Menu.Item
                     name='all'
                     fitted='vertically'
+                    color='blue'
                     active={selectedSub === 'all'}
                     onClick={this.handleSubClick}
                 >
@@ -39,6 +40,7 @@ class SubredditList extends React.Component {
                 <Menu.Item
                     name='home'
                     fitted='vertically'
+                    color='blue'
                     active={selectedSub === 'home'}
                     onClick={this.handleSubClick}
 
@@ -48,6 +50,17 @@ class SubredditList extends React.Component {
                 <Menu.Item>
                     Direct Message
                 </Menu.Item>
+                <Menu.Item
+                    name='uuwu'
+                    fitted='vertically'
+                    color='blue'
+                    active={selectedSub === 'uuwu'}
+                    onClick={this.handleSubClick}
+
+                >
+                    <p style={{paddingTop:5, paddingBottom:5}}> - UUWU</p>
+                </Menu.Item>
+
             </Menu >
         )
     }
