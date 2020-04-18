@@ -30,18 +30,20 @@ class SubredditList extends React.Component {
                 </Menu.Item>
                 <Menu.Item
                     name='all'
+                    fitted='vertically'
                     active={selectedSub === 'all'}
                     onClick={this.handleSubClick}
                 >
-                    # all
+                    <p style={{paddingTop:5, paddingBottom:5}}># all</p>
                 </Menu.Item>
                 <Menu.Item
                     name='home'
+                    fitted='vertically'
                     active={selectedSub === 'home'}
                     onClick={this.handleSubClick}
 
                 >
-                    # home
+                    <p style={{paddingTop:5, paddingBottom:5}}># home</p>
                 </Menu.Item>
                 <Menu.Item>
                     Direct Message
