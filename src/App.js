@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button } from "@blueprintjs/core";
+import SubredditList from './components/leftHandNav/SubredditList'
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Button intent="success" text="button content"/>
+      <SubredditList/>
     </div>
   );
 }
