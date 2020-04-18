@@ -22,7 +22,11 @@ class SubredditList extends React.Component {
                 inverted
                 vertical
                 borderless
-                style={{ height: '100vh', backgroundColor: '#1D2229' }}
+                style={{ 
+                    height: '100vh', 
+                    backgroundColor: '#1D2229',
+                    borderRadius: 0
+                }}
 
             >
                 <Menu.Item>
