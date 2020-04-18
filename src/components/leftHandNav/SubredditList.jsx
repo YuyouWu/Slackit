@@ -1,34 +1,71 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Input, Button } from 'semantic-ui-react';
 
 class SubredditList extends React.Component {
     constructor() {
         super();
         this.state = {
-            selectedSub: 'all'
+            selectedSub: localStorage.getItem('currentSub') || 'all',
+            enteredSub: '',
+            subList: JSON.parse(localStorage.getItem('subList')) || []
+        }
+        //Create key subList if none exists
+        if (localStorage.getItem('subList') === null) {
+            localStorage.setItem('subList', JSON.stringify([]));
         }
     }
 
     handleSubClick = (e, { name }) => {
         this.setState({
             selectedSub: name
-        })
+        }, () => {
+            localStorage.setItem('currentSub', name)
+        });
     }
 
+    handleAddSub = (event) => {
+        if (event.key === 'Enter') {
+            //
+            let subList = JSON.parse(localStorage.getItem('subList'));
+            subList.push(event.target.value);
+            localStorage.setItem('subList', JSON.stringify(subList));
+            //
+            this.setState({
+                enteredSub: '',
+                subList: JSON.parse(localStorage.getItem('subList')) || []
+            })
+        }
+    }
+
+
     render() {
-        const { selectedSub } = this.state
+        const { selectedSub, enteredSub, subList } = this.state
         return (
             <Menu
                 inverted
                 vertical
                 borderless
-                style={{ 
-                    height: '100vh', 
+                style={{
+                    height: '100vh',
                     backgroundColor: '#1D2229',
                     borderRadius: 0
                 }}
 
             >
+                <Menu.Item>
+                    <Input
+                        type="text"
+                        value={enteredSub}
+                        placeholder='Add subreddit'
+                        onKeyPress={this.handleAddSub}
+                        onChange={(event) => {
+                            this.setState({
+                                enteredSub: event.target.value
+                            })
+                        }}
+                    >
+                    </Input>
+                </Menu.Item>
                 <Menu.Item>
                     Channels
                 </Menu.Item>
@@ -39,7 +76,7 @@ class SubredditList extends React.Component {
                     active={selectedSub === 'all'}
                     onClick={this.handleSubClick}
                 >
-                    <p style={{paddingTop:5, paddingBottom:5}}># all</p>
+                    <p style={{ paddingTop: 5, paddingBottom: 5 }}># all</p>
                 </Menu.Item>
                 <Menu.Item
                     name='home'
@@ -49,8 +86,23 @@ class SubredditList extends React.Component {
                     onClick={this.handleSubClick}
 
                 >
-                    <p style={{paddingTop:5, paddingBottom:5}}># home</p>
+                    <p style={{ paddingTop: 5, paddingBottom: 5 }}># home</p>
                 </Menu.Item>
+                {subList.map((sub, i) => {
+                    return (
+                        <Menu.Item
+                            name={sub}
+                            key={i}
+                            fitted='vertically'
+                            color='blue'
+                            active={selectedSub === sub}
+                            onClick={this.handleSubClick}
+                        >
+                            <p style={{ paddingTop: 5, paddingBottom: 5 }}># {sub}</p>
+                        </Menu.Item>
+
+                    )
+                })}
                 <Menu.Item>
                     Direct Message
                 </Menu.Item>
@@ -62,7 +114,7 @@ class SubredditList extends React.Component {
                     onClick={this.handleSubClick}
 
                 >
-                    <p style={{paddingTop:5, paddingBottom:5}}> - UUWU</p>
+                    <p style={{ paddingTop: 5, paddingBottom: 5 }}> - UUWU</p>
                 </Menu.Item>
 
             </Menu >
