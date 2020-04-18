@@ -27,7 +27,7 @@ class SubredditList extends React.Component {
         if (event.key === 'Enter') {
             //
             let subList = JSON.parse(localStorage.getItem('subList'));
-            subList.push(event.target.value);
+            subList.push(event.target.value.toLowerCase());
             localStorage.setItem('subList', JSON.stringify(subList));
             //
             this.setState({
@@ -47,6 +47,7 @@ class SubredditList extends React.Component {
                 borderless
                 style={{
                     height: '100vh',
+                    width:'100%',
                     backgroundColor: '#1D2229',
                     borderRadius: 0
                 }}
