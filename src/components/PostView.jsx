@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Item, Image } from 'semantic-ui-react';
+import { Button, Item, Image, Loader, Dimmer } from 'semantic-ui-react';
 import axios from 'axios';
 import isImageUrl from 'is-image-url';
 import ReactPlayer from 'react-player'
@@ -13,6 +13,7 @@ class PostView extends React.Component {
         this.state = {
             postData: '',
             commentData: '',
+            loading: true,
             title: props.title
         }
     }
@@ -20,6 +21,7 @@ class PostView extends React.Component {
     getPostData = () => {
         axios.get(`https://www.reddit.com${this.props.permaLink}.json`).then(res => {
             this.setState({
+                loading: false,
                 postData: res.data[0].data.children[0].data,
                 commentData: res.data[1].data.children
             })
@@ -57,7 +59,7 @@ class PostView extends React.Component {
 
     renderGIF = () => {
         if (this.state.postData.media && this.state.postData.media.oembed && this.state.postData.media.oembed['thumbnail_url']) {
-            if (this.state.postData.media.oembed['provider_name'] !== "YouTube") {
+            if (this.state.postData.media.oembed['provider_name'] !== "YouTube" && !this.state.postData.url.endsWith("gifv")) {
                 return (
                     <Image
                         fluid
@@ -66,6 +68,22 @@ class PostView extends React.Component {
                 )
             }
         }
+        if (this.state.postData.url && this.state.postData.url.endsWith("gifv")) {
+            if (this.state.postData.preview && this.state.postData.preview['reddit_video_preview']) {
+                return (
+                    <ReactPlayer
+                        url={this.state.postData.preview['reddit_video_preview']['hls_url']}
+                        controls={true}
+                    />
+                )
+            }
+        }
+    }
+
+    renderLink = () => {
+        return (
+            <Button href={this.state.postData.url}>{this.state.postData.url}</Button>
+        )
     }
 
     renderText = () => {
@@ -94,6 +112,9 @@ class PostView extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.title !== this.state.title) {
+            this.setState({
+                loading: true
+            });
             this.getPostData();
         }
     }
@@ -138,12 +159,18 @@ class PostView extends React.Component {
                             >
                                 {this.props.title}
                             </Item.Meta>
+                            {this.state.loading &&
+                                <Dimmer active inverted>
+                                    <Loader inverted/>
+                                </Dimmer>
+                            }
                             {this.renderPostVideo()}
                             {isImageUrl(this.state.postData.url) &&
                                 this.renderPostImage()
                             }
                             {this.renderGIF()}
                             {this.renderText()}
+                            {this.renderLink()}
                         </Item.Content>
                     </Item>
                 </Item.Group>

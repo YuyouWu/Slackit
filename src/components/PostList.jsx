@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Grid } from 'semantic-ui-react';
+import { Item, Grid, Dimmer, Loader } from 'semantic-ui-react';
 import axios from 'axios';
 import slackbot from './../img/slackbot.png'
 
@@ -13,6 +13,8 @@ class PostList extends React.Component {
             postsData: [],
             title: '',
             author: '',
+            postHint: '',
+            loading: true,
             showPost: false
         }
     }
@@ -20,6 +22,7 @@ class PostList extends React.Component {
     getPostList = () => {
         axios.get(`https://old.reddit.com/r/${this.state.currentSub}.json`).then((res) => {
             this.setState({
+                loading: false,
                 postsData: res.data.data.children
             })
         });
@@ -45,6 +48,9 @@ class PostList extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.currentSub !== this.state.currentSub) {
+            this.setState({
+                loading: true
+            });
             this.getPostList();
         }
     }
@@ -54,6 +60,11 @@ class PostList extends React.Component {
             <Grid>
                 <Grid.Row style={{ height: '100vh' }}>
                     <Grid.Column width={this.state.showPost ? 10 : 16}>
+                        {this.state.loading &&
+                            <Dimmer active inverted>
+                                <Loader inverted/>
+                            </Dimmer>
+                        }
                         <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
                             <Item.Group style={{ paddingTop: 10 }}>
                                 {this.state.postsData ?
@@ -61,6 +72,7 @@ class PostList extends React.Component {
                                         const author = post.data.author;
                                         const title = post.data.title
                                         const permaLink = post.data.permalink;
+                                        const postHint = post.data['post_hint'];
                                         return (
                                             <Item
                                                 key={i}
@@ -69,10 +81,12 @@ class PostList extends React.Component {
                                                     paddingLeft: 20
                                                 }}
                                                 onClick={() => {
+                                                    console.log(post.data)
                                                     this.setState({
                                                         permaLink: permaLink,
                                                         title: title,
                                                         author: author,
+                                                        postHint: postHint,
                                                         showPost: true
                                                     });
                                                 }}
@@ -128,7 +142,13 @@ class PostList extends React.Component {
                     {this.state.showPost &&
                         <Grid.Column width={6}>
                             <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
-                                <PostView closePostView={this.closePostView} permaLink={this.state.permaLink} title={this.state.title} author={this.state.author} />
+                                <PostView
+                                    closePostView={this.closePostView}
+                                    permaLink={this.state.permaLink}
+                                    title={this.state.title}
+                                    author={this.state.author}
+                                    postHint={this.state.postHint}
+                                />
                             </div>
                         </Grid.Column>
                     }
