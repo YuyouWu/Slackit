@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Item, Image } from 'semantic-ui-react';
 import axios from 'axios';
 import isImageUrl from 'is-image-url';
+import ReactPlayer from 'react-player'
+
 import slackbot from './../img/slackbot.png'
 
 class PostView extends React.Component {
@@ -25,13 +27,48 @@ class PostView extends React.Component {
 
     renderPostImage = () => {
         return (
-            <div style={{marginRight: 10}}>
+            <div>
                 <Image
                     fluid
                     src={this.state.postData.url}
                 />
             </div>
         )
+    }
+
+    renderPostVideo = () => {
+        if (this.state.postData['secure_media'] && this.state.postData['secure_media']['reddit_video'] && this.state.postData['secure_media']['reddit_video']['hls_url']) {
+            return (
+                <ReactPlayer
+                    url={this.state.postData['secure_media']['reddit_video']['hls_url']}
+                    controls={true}
+                    config={{
+                        file: {
+                            attributes: {
+                                crossOrigin: 'true'
+                            }
+                        }
+                    }}
+                />
+            )
+        } else if (this.state.postData.url && this.state.postData['secure_media'] && this.state.postData['secure_media'].type === "youtube.com") {
+            return (
+                <ReactPlayer
+                    url={this.state.postData.url}
+                    controls={true}
+                />
+            )
+        }
+    }
+
+    rendertext = () => {
+        if (this.state.postData.selftext) {
+            return (
+                <p>
+                    {this.state.postData.selftext}
+                </p>
+            )
+        }
     }
 
 
@@ -56,10 +93,10 @@ class PostView extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{marginRight: 10}}>
                 <Button
                     basic
-                    style={{float: 'right', marginRight: 10}}
+                    style={{ float: 'right'}}
                     onClick={() => {
                         this.props.closePostView()
                     }}
@@ -94,9 +131,11 @@ class PostView extends React.Component {
                             >
                                 {this.props.title}
                             </Item.Meta>
-                            {isImageUrl(this.state.postData.url) && 
+                            {isImageUrl(this.state.postData.url) &&
                                 this.renderPostImage()
                             }
+                            {this.renderPostVideo()}
+                            {this.rendertext()}
                         </Item.Content>
                     </Item>
                 </Item.Group>
