@@ -11,10 +11,10 @@ function App() {
     <div className="App">
       <Grid>
         <Grid.Row style={{height: '100vh'}}>
-          <Grid.Column width={3}>
+          <Grid.Column width={3} style={{paddingRight: 0}}>
             <SubredditList />
           </Grid.Column>
-          <Grid.Column width={13}>
+          <Grid.Column width={13} style={{paddingLeft: 0}}>
             <PostList />
           </Grid.Column>
         </Grid.Row>

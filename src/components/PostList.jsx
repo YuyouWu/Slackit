@@ -23,32 +23,20 @@ class PostList extends React.Component {
         return (
             <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
                 <Item.Group>
-                    <Item>
-                        <Item.Content>
-                            <Item.Meta
-                                style={{
-                                    fontWeight: 'bold',
-                                    color: 'black'
-                                }}
-                            >
-                                Name
-                            </Item.Meta>
-                            <Item.Meta
-                                style={{
-                                    color: 'black'
-                                }}
-                            >
-                                Title
-                            </Item.Meta>
-                        </Item.Content>
-                    </Item>
-
                     {this.state.postsData ?
                         this.state.postsData.map((post, i) => {
                             const author = post.data.author;
                             const title = post.data.title
                             return (
-                                <Item>
+                                <Item 
+                                    className="postTile"
+                                    style={{
+                                        paddingLeft: 20
+                                    }}
+                                    onClick ={() => {
+                                        console.log(title);
+                                    }}
+                                > 
                                     <Item.Content>
                                         <Item.Meta
                                             style={{
@@ -57,18 +45,18 @@ class PostList extends React.Component {
                                             }}
                                         >
                                             {author}
-                                    </Item.Meta>
+                                        </Item.Meta>
                                         <Item.Meta
                                             style={{
                                                 color: 'black'
                                             }}
                                         >
                                             {title}
-                                    </Item.Meta>
+                                        </Item.Meta>
                                     </Item.Content>
                                 </Item>
 
-                            ) 
+                            )
                         })
                         : (
                             <p> You done goofed </p>
