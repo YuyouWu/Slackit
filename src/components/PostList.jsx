@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Grid, Dimmer, Loader } from 'semantic-ui-react';
+import { Item, Grid, Label, Icon, Dimmer, Loader } from 'semantic-ui-react';
 import axios from 'axios';
 import slackbot from './../img/slackbot.png'
 
@@ -72,6 +72,7 @@ class PostList extends React.Component {
                                         const author = post.data.author;
                                         const title = post.data.title
                                         const permaLink = post.data.permalink;
+                                        const score = post.data.score;
                                         const postHint = post.data['post_hint'];
                                         return (
                                             <Item
@@ -126,6 +127,9 @@ class PostList extends React.Component {
                                                         }}
                                                     >
                                                         {title}
+                                                    </Item.Meta>
+                                                    <Item.Meta>
+                                                        <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label>
                                                     </Item.Meta>
                                                 </Item.Content>
                                             </Item>
