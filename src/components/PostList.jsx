@@ -78,8 +78,8 @@ class PostList extends React.Component {
                                 >
                                     <Item.Image
                                         style={{
-                                            height: 40,
-                                            width: 40,
+                                            height: 35,
+                                            width: 35,
                                             marginTop: 5,
                                             borderRadius: '10%',
                                             overflow: 'hidden'
