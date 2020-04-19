@@ -6,6 +6,7 @@ import ReactPlayer from 'react-player'
 
 import slackbot from './../img/slackbot.png'
 
+
 class PostView extends React.Component {
     constructor(props) {
         super(props);
@@ -42,13 +43,6 @@ class PostView extends React.Component {
                 <ReactPlayer
                     url={this.state.postData['secure_media']['reddit_video']['hls_url']}
                     controls={true}
-                    config={{
-                        file: {
-                            attributes: {
-                                crossOrigin: 'true'
-                            }
-                        }
-                    }}
                 />
             )
         } else if (this.state.postData.url && this.state.postData['secure_media'] && this.state.postData['secure_media'].type === "youtube.com") {
