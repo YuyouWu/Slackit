@@ -45,7 +45,7 @@ class SubredditList extends React.Component {
 
             <Grid>
                 <Grid.Row style={{ height: '100vh' }}>
-                    <Grid.Column width={3} style={{ paddingRight: 0 }}>
+                    <Grid.Column width={2} style={{ paddingRight: 0, minWidth: '150px', maxWidth:'350px' }}>
                         <Menu
                             inverted
                             vertical
@@ -116,7 +116,7 @@ class SubredditList extends React.Component {
 
                         </Menu >
                     </Grid.Column>
-                    <Grid.Column width={13} style={{ paddingLeft: 0 }}>
+                    <Grid.Column width={14} tyle={{ paddingLeft: 0 }}>
                         <PostList currentSub={selectedSub} />
                     </Grid.Column>
                 </Grid.Row>
