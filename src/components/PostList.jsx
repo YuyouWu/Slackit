@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Grid, Label, Icon, Dimmer, Loader } from 'semantic-ui-react';
+import { Item, Grid, Label, Button, Dimmer, Loader } from 'semantic-ui-react';
 import axios from 'axios';
 import slackbot from './../img/slackbot.png'
 
@@ -15,6 +15,7 @@ class PostList extends React.Component {
             author: '',
             postHint: '',
             loading: true,
+            page: 0,
             showPost: false
         }
     }
@@ -26,6 +27,29 @@ class PostList extends React.Component {
                 postsData: res.data.data.children
             })
         });
+    }
+
+    getNextPage = () => {
+        const lastPostID = this.state.postsData[this.state.postsData.length - 1].data.name;
+        //Fetch 25 more post after the last post 
+        axios.get(`https://old.reddit.com/r/${this.state.currentSub}/.json?count=25&after=${lastPostID}`).then((res) => {
+            this.setState({
+                loading: false,
+                postsData: res.data.data.children
+            })
+        });
+    }
+
+    getPrevPage = () => {
+        const firstPostID = this.state.postsData[0].data.name;
+        //Fetch 25 more post after the last post 
+        axios.get(`https://old.reddit.com/r/${this.state.currentSub}/.json?count=26&before=${firstPostID}`).then((res) => {
+            this.setState({
+                loading: false,
+                postsData: res.data.data.children
+            })
+        });
+
     }
 
     closePostView = () => {
@@ -62,7 +86,7 @@ class PostList extends React.Component {
                     <Grid.Column width={this.state.showPost ? 10 : 16}>
                         {this.state.loading &&
                             <Dimmer active inverted>
-                                <Loader inverted/>
+                                <Loader inverted />
                             </Dimmer>
                         }
                         <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
@@ -140,6 +164,33 @@ class PostList extends React.Component {
                                         <p> You done goofed </p>
                                     )
                                 }
+                                {this.state.page > 0 &&
+                                    <Button
+                                        style={{ marginBottom: 10 }}
+                                        onClick={() => {
+                                            this.setState({
+                                                loading: true,
+                                                page: this.state.page - 1
+                                            });
+                                            this.getPrevPage();
+                                        }}
+                                    >
+                                        Prev Page
+                                </Button>
+                                }
+
+                                <Button
+                                    style={{ marginBottom: 10 }}
+                                    onClick={() => {
+                                        this.setState({
+                                            loading: true,
+                                            page: this.state.page + 1
+                                        });
+                                        this.getNextPage();
+                                    }}
+                                >
+                                    Next Page
+                                </Button>
                             </Item.Group>
                         </div>
                     </Grid.Column>
