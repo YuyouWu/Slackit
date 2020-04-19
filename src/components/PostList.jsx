@@ -129,7 +129,8 @@ class PostList extends React.Component {
                                                         {title}
                                                     </Item.Meta>
                                                     <Item.Meta>
-                                                        <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label>
+                                                        {/* <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label> */}
+                                                        <Label basic size="tiny"><span role="img" aria-label="thumbs-up">👍</span> {score}</Label>
                                                     </Item.Meta>
                                                 </Item.Content>
                                             </Item>
