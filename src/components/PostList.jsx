@@ -81,7 +81,6 @@ class PostList extends React.Component {
                                                     paddingLeft: 20
                                                 }}
                                                 onClick={() => {
-                                                    console.log(post.data)
                                                     this.setState({
                                                         permaLink: permaLink,
                                                         title: title,
