@@ -55,7 +55,20 @@ class PostView extends React.Component {
         }
     }
 
-    rendertext = () => {
+    renderGIF = () => {
+        if (this.state.postData.media && this.state.postData.media.oembed && this.state.postData.media.oembed['thumbnail_url']) {
+            if (this.state.postData.media.oembed['provider_name'] !== "YouTube") {
+                return (
+                    <Image
+                        fluid
+                        src={this.state.postData.media.oembed['thumbnail_url']}
+                    />
+                )
+            }
+        }
+    }
+
+    renderText = () => {
         if (this.state.postData.selftext) {
             return (
                 <p>
@@ -87,10 +100,10 @@ class PostView extends React.Component {
 
     render() {
         return (
-            <div style={{marginRight: 10}}>
+            <div style={{ marginRight: 20 }}>
                 <Button
                     basic
-                    style={{ float: 'right'}}
+                    style={{ float: 'right' }}
                     onClick={() => {
                         this.props.closePostView()
                     }}
@@ -125,11 +138,12 @@ class PostView extends React.Component {
                             >
                                 {this.props.title}
                             </Item.Meta>
+                            {this.renderPostVideo()}
                             {isImageUrl(this.state.postData.url) &&
                                 this.renderPostImage()
                             }
-                            {this.renderPostVideo()}
-                            {this.rendertext()}
+                            {this.renderGIF()}
+                            {this.renderText()}
                         </Item.Content>
                     </Item>
                 </Item.Group>

@@ -96,6 +96,17 @@ class PostList extends React.Component {
                                                     >
                                                         {author}
                                                     </Item.Meta>
+                                                    {
+                                                        this.state.currentSub === 'all' &&
+                                                        <Item.Meta
+                                                            style={{
+                                                                color: 'gray'
+                                                            }}
+                                                        >
+                                                            {post.data['subreddit_name_prefixed']}
+                                                        </Item.Meta>
+
+                                                    }
                                                     <Item.Meta
                                                         style={{
                                                             color: 'black'
@@ -117,7 +128,7 @@ class PostList extends React.Component {
                     {this.state.showPost &&
                         <Grid.Column width={6}>
                             <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
-                                <PostView closePostView={this.closePostView} permaLink={this.state.permaLink} title={this.state.title} author={this.state.author}/>
+                                <PostView closePostView={this.closePostView} permaLink={this.state.permaLink} title={this.state.title} author={this.state.author} />
                             </div>
                         </Grid.Column>
                     }
