@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Item, Image } from 'semantic-ui-react';
 import axios from 'axios';
+import isImageUrl from 'is-image-url';
 import slackbot from './../img/slackbot.png'
 
 class PostView extends React.Component {
@@ -24,7 +25,7 @@ class PostView extends React.Component {
 
     renderPostImage = () => {
         return (
-            <div style={{margin: 10}}>
+            <div style={{marginRight: 10}}>
                 <Image
                     fluid
                     src={this.state.postData.url}
@@ -58,6 +59,7 @@ class PostView extends React.Component {
             <div>
                 <Button
                     basic
+                    style={{float: 'right', marginRight: 10}}
                     onClick={() => {
                         this.props.closePostView()
                     }}
@@ -92,7 +94,9 @@ class PostView extends React.Component {
                             >
                                 {this.props.title}
                             </Item.Meta>
-                            {this.renderPostImage()}
+                            {isImageUrl(this.state.postData.url) && 
+                                this.renderPostImage()
+                            }
                         </Item.Content>
                     </Item>
                 </Item.Group>
