@@ -42,10 +42,9 @@ class PostView extends React.Component {
     renderPostVideo = () => {
         if (this.state.postData['secure_media'] && this.state.postData['secure_media']['reddit_video'] && this.state.postData['secure_media']['reddit_video']['hls_url']) {
             return (
-                <ReactPlayer
-                    url={this.state.postData['secure_media']['reddit_video']['hls_url']}
-                    controls={true}
-                />
+                <video width="800" height="500" controls>
+                    <source src={this.state.postData['secure_media']['reddit_video']['fallback_url']}/>
+                </video>
             )
         } else if (this.state.postData.url && this.state.postData['secure_media'] && this.state.postData['secure_media'].type === "youtube.com") {
             return (
@@ -72,7 +71,7 @@ class PostView extends React.Component {
             if (this.state.postData.preview && this.state.postData.preview['reddit_video_preview']) {
                 return (
                     <ReactPlayer
-                        url={this.state.postData.preview['reddit_video_preview']['hls_url']}
+                        url={this.state.postData.preview['reddit_video_preview']['fallback_url']}
                         controls={true}
                     />
                 )
