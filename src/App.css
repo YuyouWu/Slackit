@@ -4,3 +4,11 @@
 .postTile:hover {
   background-color: #f2f2f2 !important;
 }
+
+.subMenuItem:not(:hover) .deleteSubLabel{
+    visibility: hidden !important;
+}
+
+.subMenuItem:hover .deleteSubLabel{
+  visibility: visible !important;
+}

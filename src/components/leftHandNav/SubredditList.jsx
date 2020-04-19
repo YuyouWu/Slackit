@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Input, Grid } from 'semantic-ui-react';
+import { Menu, Input, Grid, Label } from 'semantic-ui-react';
 import PostList from './../PostList';
 
 class SubredditList extends React.Component {
@@ -38,6 +38,18 @@ class SubredditList extends React.Component {
         }
     }
 
+    handleRemoveSub = (sub) => {
+        let subList = JSON.parse(localStorage.getItem('subList'));
+        const index = subList.indexOf(sub);
+        if (index > -1) {
+            subList.splice(index, 1);
+        }
+        localStorage.setItem('subList', JSON.stringify(subList));
+        this.setState({
+            subList: JSON.parse(localStorage.getItem('subList')) || []
+        })
+    }
+
 
     render() {
         const { selectedSub, enteredSub, subList } = this.state
@@ -45,7 +57,7 @@ class SubredditList extends React.Component {
 
             <Grid>
                 <Grid.Row style={{ height: '100vh' }}>
-                    <Grid.Column width={2} style={{ paddingRight: 0, minWidth: '150px', maxWidth:'350px' }}>
+                    <Grid.Column width={2} style={{ paddingRight: 0, minWidth: '150px', maxWidth: '350px' }}>
                         <Menu
                             inverted
                             vertical
@@ -88,6 +100,7 @@ class SubredditList extends React.Component {
                             {subList.map((sub, i) => {
                                 return (
                                     <Menu.Item
+                                        className="subMenuItem"
                                         name={sub}
                                         key={i}
                                         fitted='vertically'
@@ -95,9 +108,21 @@ class SubredditList extends React.Component {
                                         active={selectedSub === sub}
                                         onClick={this.handleSubClick}
                                     >
+                                        <Label
+                                            className="deleteSubLabel"
+                                            as='a'
+                                            color='red'
+                                            style={{ marginTop: 5, paddingBottom: 5 }}
+                                            size='tiny'
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                this.handleRemoveSub(sub);
+                                            }}
+                                        >
+                                            X
+                                        </Label>
                                         <p style={{ paddingTop: 5, paddingBottom: 5 }}># {sub}</p>
                                     </Menu.Item>
-
                                 )
                             })}
                             <Menu.Item>
@@ -108,10 +133,12 @@ class SubredditList extends React.Component {
                                 fitted='vertically'
                                 color='blue'
                                 active={selectedSub === 'uuwu'}
-                                onClick={this.handleSubClick}
-
+                            // onClick={this.handleSubClick}
                             >
-                                <p style={{ paddingTop: 5, paddingBottom: 5 }}> - UUWU</p>
+                                <p style={{ paddingTop: 5, paddingBottom: 5, display: 'inline' }}>
+                                    <Label circular color="green" style={{ fontSize: 5, marginRight: 10 }} />
+                                     UUWU
+                                </p>
                             </Menu.Item>
 
                         </Menu >
