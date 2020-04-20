@@ -232,11 +232,12 @@ class PostList extends React.Component {
                         </div>
                     </Grid.Column>
                     {this.state.showPost &&
-                        <Grid.Column width={6}>
-                            <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
+                        <Grid.Column width={6} style={{paddingLeft:0}}>
+                            <div style={{ height: '100vh', overflow: 'auto' }}>
                                 <PostView
                                     closePostView={this.closePostView}
                                     permaLink={this.state.permaLink}
+                                    currentSub={this.state.currentSub}
                                     title={this.state.title}
                                     author={this.state.author}
                                     postHint={this.state.postHint}

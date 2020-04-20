@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Item, Image, Loader, Dimmer } from 'semantic-ui-react';
+import { Button, Item, Image, Sticky, Loader, Dimmer } from 'semantic-ui-react';
 import axios from 'axios';
 import isImageUrl from 'is-image-url';
 import ReactPlayer from 'react-player'
@@ -121,15 +121,40 @@ class PostView extends React.Component {
     render() {
         return (
             <div style={{ marginRight: 20 }}>
-                <Button
-                    basic
-                    style={{ float: 'right' }}
-                    onClick={() => {
-                        this.props.closePostView()
-                    }}
-                >
-                    X
-                </Button>
+                <Sticky>
+                    <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC' }}>
+                        <Item style={{ padding: 20 }}>
+                            <Item.Content>
+                                <Item.Meta
+                                    style={{
+                                        fontWeight: 'bold',
+                                        color: 'black'
+                                    }}
+                                >
+                                    <Button
+                                        basic
+                                        floated="right"
+                                        onClick={() => {
+                                            this.props.closePostView()
+                                        }}
+                                    >
+                                        X
+                                    </Button>
+                                    Thread
+                                </Item.Meta>
+                                <Item.Meta
+                                    style={{
+                                        color: 'black',
+                                        marginTop: 5
+                                    }}
+                                >
+                                    #{this.props.currentSub}
+                                </Item.Meta>
+                            </Item.Content>
+                        </Item>
+                    </div>
+                </Sticky>
+
                 <Item.Group>
                     <Item>
                         <Item.Image
