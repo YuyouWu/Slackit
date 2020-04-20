@@ -38,11 +38,10 @@ class SubredditList extends React.Component {
         }
     }
 
-    handleRemoveSub = (sub) => {
+    handleRemoveSub = (i) => {
         let subList = JSON.parse(localStorage.getItem('subList'));
-        const index = subList.indexOf(sub);
-        if (index > -1) {
-            subList.splice(index, 1);
+        if (i > -1) {
+            subList.splice(i, 1);
         }
         localStorage.setItem('subList', JSON.stringify(subList));
         this.setState({
@@ -116,7 +115,7 @@ class SubredditList extends React.Component {
                                             size='tiny'
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                this.handleRemoveSub(sub);
+                                                this.handleRemoveSub(i);
                                             }}
                                         >
                                             X
