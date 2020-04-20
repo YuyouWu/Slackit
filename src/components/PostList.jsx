@@ -1,9 +1,31 @@
 import React from 'react';
 import { Item, Grid, Label, Button, Dimmer, Loader, Icon, Sticky } from 'semantic-ui-react';
 import axios from 'axios';
-import slackbot from './../img/slackbot.png'
-
 import PostView from './PostView';
+
+import profilePic0 from './../img/profilePic0.png'
+import profilePic1 from './../img/profilePic1.png'
+import profilePic2 from './../img/profilePic2.png'
+import profilePic3 from './../img/profilePic3.png'
+import profilePic4 from './../img/profilePic4.png'
+import profilePic5 from './../img/profilePic5.png'
+import profilePic6 from './../img/profilePic6.png'
+import profilePic7 from './../img/profilePic7.png'
+import profilePic8 from './../img/profilePic8.png'
+import profilePic9 from './../img/profilePic9.png'
+
+const profilePicArr = [
+    profilePic0,
+    profilePic1,
+    profilePic2,
+    profilePic3,
+    profilePic4,
+    profilePic5,
+    profilePic6,
+    profilePic7,
+    profilePic8,
+    profilePic9
+]
 
 class PostList extends React.Component {
     constructor(props) {
@@ -135,6 +157,7 @@ class PostList extends React.Component {
                                         const permaLink = post.data.permalink;
                                         const score = post.data.score;
                                         const postHint = post.data['post_hint'];
+                                        const profilePicIdx = i%9;
                                         return (
                                             <Item
                                                 key={i}
@@ -148,6 +171,7 @@ class PostList extends React.Component {
                                                         title: title,
                                                         author: author,
                                                         postHint: postHint,
+                                                        profilePicIdx: profilePicIdx,
                                                         showPost: true
                                                     });
                                                 }}
@@ -160,7 +184,7 @@ class PostList extends React.Component {
                                                         borderRadius: '10%',
                                                         overflow: 'hidden'
                                                     }}
-                                                    src={slackbot}
+                                                    src={profilePicArr[profilePicIdx]}
                                                 />
                                                 <Item.Content>
                                                     <Item.Meta
@@ -241,6 +265,7 @@ class PostList extends React.Component {
                                     title={this.state.title}
                                     author={this.state.author}
                                     postHint={this.state.postHint}
+                                    profilePicIdx={this.state.profilePicIdx}
                                 />
                             </div>
                         </Grid.Column>
