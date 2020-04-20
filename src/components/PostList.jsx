@@ -47,9 +47,7 @@ class PostList extends React.Component {
             this.setState({
                 loading: false,
                 postsData: res.data.data.children
-            }, () => {
-                console.log(this.state.postsData);
-            })
+            });
         });
     }
 
