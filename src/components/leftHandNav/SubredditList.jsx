@@ -133,14 +133,12 @@ class SubredditList extends React.Component {
                                 fitted='vertically'
                                 color='blue'
                                 active={selectedSub === 'uuwu'}
-                            // onClick={this.handleSubClick}
                             >
                                 <p style={{ paddingTop: 5, paddingBottom: 5, display: 'inline' }}>
                                     <Label circular color="green" style={{ fontSize: 5, marginRight: 10 }} />
                                      UUWU
                                 </p>
                             </Menu.Item>
-
                         </Menu >
                     </Grid.Column>
                     <Grid.Column width={14} tyle={{ paddingLeft: 0 }}>

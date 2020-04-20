@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Grid, Label, Button, Dimmer, Loader } from 'semantic-ui-react';
+import { Item, Grid, Label, Button, Dimmer, Loader, Icon, Sticky } from 'semantic-ui-react';
 import axios from 'axios';
 import slackbot from './../img/slackbot.png'
 
@@ -25,6 +25,8 @@ class PostList extends React.Component {
             this.setState({
                 loading: false,
                 postsData: res.data.data.children
+            }, () => {
+                console.log(this.state.postsData);
             })
         });
     }
@@ -83,13 +85,48 @@ class PostList extends React.Component {
         return (
             <Grid>
                 <Grid.Row style={{ height: '100vh' }}>
-                    <Grid.Column width={this.state.showPost ? 10 : 16}>
+                    <Grid.Column width={this.state.showPost ? 10 : 16} style={{ paddingLeft: 0 }}>
                         {this.state.loading &&
                             <Dimmer active inverted>
                                 <Loader inverted />
                             </Dimmer>
                         }
-                        <div style={{ height: '100vh', paddingTop: 20, overflow: 'auto' }}>
+                        <div style={{ height: '100vh', overflow: 'auto' }}>
+                            <Sticky>
+                                <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC'}}>
+                                    <Item style={{ padding: 20 }}>
+                                        <Item.Content>
+                                            <Item.Meta
+                                                style={{
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}
+                                            >
+                                                #{this.state.currentSub}
+                                            </Item.Meta>
+                                            <Item.Meta
+                                                style={{
+                                                    color: 'black',
+                                                    marginTop: 5
+                                                }}
+                                            >
+                                                {
+                                                    this.state.postsData && this.state.postsData[0] ?
+                                                        (
+                                                            <div>
+                                                                <Icon name="user outline" style={{ fontSize: 12, color: 'grey' }} />
+                                                                {this.state.postsData[0].data['subreddit_subscribers']}
+                                                            </div>
+                                                        )
+                                                        :
+                                                        null
+                                                }
+                                            </Item.Meta>
+                                        </Item.Content>
+                                    </Item>
+                                </div>
+                            </Sticky>
+
                             <Item.Group style={{ paddingTop: 10 }}>
                                 {this.state.postsData ?
                                     this.state.postsData.map((post, i) => {
@@ -166,7 +203,7 @@ class PostList extends React.Component {
                                 }
                                 {this.state.page > 0 &&
                                     <Button
-                                        style={{ marginBottom: 10 }}
+                                        style={{ marginBottom: 10, marginLeft: 20 }}
                                         onClick={() => {
                                             this.setState({
                                                 loading: true,
@@ -180,7 +217,7 @@ class PostList extends React.Component {
                                 }
 
                                 <Button
-                                    style={{ marginBottom: 10 }}
+                                    style={{ marginBottom: 10, marginLeft: 20 }}
                                     onClick={() => {
                                         this.setState({
                                             loading: true,

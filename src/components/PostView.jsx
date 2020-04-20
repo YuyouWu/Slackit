@@ -42,8 +42,8 @@ class PostView extends React.Component {
     renderPostVideo = () => {
         if (this.state.postData['secure_media'] && this.state.postData['secure_media']['reddit_video'] && this.state.postData['secure_media']['reddit_video']['hls_url']) {
             return (
-                <video width="800" height="500" controls>
-                    <source src={this.state.postData['secure_media']['reddit_video']['fallback_url']}/>
+                <video width="500" height="300" controls>
+                    <source src={this.state.postData['secure_media']['reddit_video']['fallback_url']} />
                 </video>
             )
         } else if (this.state.postData.url && this.state.postData['secure_media'] && this.state.postData['secure_media'].type === "youtube.com") {
@@ -160,7 +160,7 @@ class PostView extends React.Component {
                             </Item.Meta>
                             {this.state.loading &&
                                 <Dimmer active inverted>
-                                    <Loader inverted/>
+                                    <Loader inverted />
                                 </Dimmer>
                             }
                             {this.renderPostVideo()}
@@ -169,7 +169,9 @@ class PostView extends React.Component {
                             }
                             {this.renderGIF()}
                             {this.renderText()}
-                            {this.renderLink()}
+                            <div>
+                                {this.renderLink()}
+                            </div>
                         </Item.Content>
                     </Item>
                 </Item.Group>
