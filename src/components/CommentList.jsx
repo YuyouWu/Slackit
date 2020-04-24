@@ -1,6 +1,6 @@
 import React from 'react';
 import { Item } from 'semantic-ui-react';
-import ReactHtmlParser  from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 
 import profilePic0 from './../img/profilePic0.png'
 import profilePic1 from './../img/profilePic1.png'
@@ -67,8 +67,12 @@ class CommentList extends React.Component {
                                         {ReactHtmlParser(ReactHtmlParser(comment.data['body_html']))}
                                     </div>
                                 </Item.Meta>
+                                {/* {
+                                    comment && comment.data && comment.data.replies && comment.data.replies.data && comment.data.replies.data.children && (
+                                        <CommentList commentData={comment.data.replies.data.children} />
+                                    )
+                                } */}
                             </Item.Content>
-
                         </Item>
                     )
                 })}

@@ -227,7 +227,7 @@ class PostView extends React.Component {
                 </Item.Group>
                 <Divider/>
                 {this.state.commentData &&
-                    <CommentList commentData={this.state.commentData} profilePicArr={profilePicArr} profilePicIdx={this.props.profilePicIdx}/>
+                    <CommentList commentData={this.state.commentData}/>
                 }
             </div>
         )
