@@ -113,7 +113,7 @@ class PostList extends React.Component {
                         }
                         <div style={{ height: '100vh', overflow: 'auto' }}>
                             <Sticky>
-                                <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC'}}>
+                                <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC' }}>
                                     <Item style={{ padding: 20 }}>
                                         <Item.Content>
                                             <Item.Meta
@@ -155,7 +155,7 @@ class PostList extends React.Component {
                                         const permaLink = post.data.permalink;
                                         const score = post.data.score;
                                         const postHint = post.data['post_hint'];
-                                        const profilePicIdx = i%9;
+                                        const profilePicIdx = i % 9;
                                         return (
                                             <Item
                                                 key={i}
@@ -185,25 +185,22 @@ class PostList extends React.Component {
                                                     src={profilePicArr[profilePicIdx]}
                                                 />
                                                 <Item.Content>
-                                                    <Item.Meta
-                                                        style={{
-                                                            fontWeight: 'bold',
-                                                            color: 'black'
-                                                        }}
-                                                    >
-                                                        {author}
-                                                    </Item.Meta>
-                                                    {
-                                                        this.state.currentSub === 'all' &&
-                                                        <Item.Meta
+                                                    <Item.Meta>
+                                                        <p
                                                             style={{
-                                                                color: 'gray'
+                                                                display: 'inline',
+                                                                fontWeight: 'bold',
+                                                                color: 'black',
+                                                                marginRight:'5px'
                                                             }}
                                                         >
-                                                            {post.data['subreddit_name_prefixed']}
-                                                        </Item.Meta>
-
-                                                    }
+                                                            {author}
+                                                        </p>
+                                                        {
+                                                            this.state.currentSub === 'all' &&
+                                                            <p style={{ display: 'inline' }}> {post.data['subreddit_name_prefixed']} </p>
+                                                        }
+                                                    </Item.Meta>
                                                     <Item.Meta
                                                         style={{
                                                             color: 'black'
@@ -254,7 +251,7 @@ class PostList extends React.Component {
                         </div>
                     </Grid.Column>
                     {this.state.showPost &&
-                        <Grid.Column width={6} style={{paddingLeft:0}}>
+                        <Grid.Column width={6} style={{ paddingLeft: 0 }}>
                             <div style={{ height: '100vh', overflow: 'auto' }}>
                                 <PostView
                                     closePostView={this.closePostView}

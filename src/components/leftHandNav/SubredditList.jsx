@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Input, Grid, Label } from 'semantic-ui-react';
+import { Menu, Input, Grid, Label, Icon, Divider } from 'semantic-ui-react';
 import PostList from './../PostList';
 
 class SubredditList extends React.Component {
@@ -70,6 +70,19 @@ class SubredditList extends React.Component {
                             }}
 
                         >
+                            <Menu.Item style={{paddingBottom: 0}}>
+                                <p style={{ display: 'inline' }}>
+                                    Slackit
+                                    <Icon name="angle down" />
+                                </p>
+                            </Menu.Item>
+                            <Menu.Item style={{paddingTop: 10, paddingBottom: 10}}>
+                                <p style={{ display: 'inline' }}>
+                                    <Label circular color="green" style={{ fontSize: 5, marginRight: 10 }} />
+                                     Your Name
+                                </p>
+                            </Menu.Item>
+                            <Divider/>
                             <Menu.Item>
                                 <Input
                                     type="text"
