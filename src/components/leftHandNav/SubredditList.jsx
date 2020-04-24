@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Input, Grid, Label, Icon, Divider } from 'semantic-ui-react';
+import { Menu, Input, Grid, Label, Icon, Divider, Popup } from 'semantic-ui-react';
 import PostList from './../PostList';
 
 class SubredditList extends React.Component {
@@ -8,7 +8,9 @@ class SubredditList extends React.Component {
         this.state = {
             selectedSub: localStorage.getItem('currentSub') || 'all',
             enteredSub: '',
-            subList: JSON.parse(localStorage.getItem('subList')) || []
+            subList: JSON.parse(localStorage.getItem('subList')) || [],
+            workspaceName: 'Slackit',
+            userName: 'Username'
         }
         //Create key subList if none exists
         if (localStorage.getItem('subList') === null) {
@@ -49,7 +51,6 @@ class SubredditList extends React.Component {
         })
     }
 
-
     render() {
         const { selectedSub, enteredSub, subList } = this.state
         return (
@@ -70,19 +71,53 @@ class SubredditList extends React.Component {
                             }}
 
                         >
-                            <Menu.Item style={{paddingBottom: 0}}>
-                                <p style={{ display: 'inline' }}>
-                                    Slackit
-                                    <Icon name="angle down" />
+                            <Popup
+                                pinned
+                                on="click"
+                                position='bottom center'
+                                trigger={
+                                    <Menu.Item style={{ paddingBottom: 5 }}>
+                                        <p style={{ display: 'inline' }}>
+                                            {this.state.workspaceName}
+                                        <Icon name="angle down" />
+                                        </p>
+                                    </Menu.Item>
+                                }
+                            >
+                                <Input
+                                    type="text"
+                                    placeholder='Change Workspace Name'
+                                    onChange={(event) => {
+                                        this.setState({
+                                            workspaceName: event.target.value
+                                        })
+                                    }}
+                                />
+                            </Popup>
+                            <Popup
+                                pinned
+                                on="click"
+                                position='bottom center'
+                                trigger={
+
+                                    <Menu.Item style={{ paddingTop: 5, paddingBottom: 10 }}>
+                                        <p style={{ display: 'inline' }}>
+                                            <Label circular color="green" style={{ fontSize: 5, marginRight: 10 }} />
+                                     {this.state.userName}
                                 </p>
-                            </Menu.Item>
-                            <Menu.Item style={{paddingTop: 10, paddingBottom: 10}}>
-                                <p style={{ display: 'inline' }}>
-                                    <Label circular color="green" style={{ fontSize: 5, marginRight: 10 }} />
-                                     Your Name
-                                </p>
-                            </Menu.Item>
-                            <Divider/>
+                                    </Menu.Item>
+                                }>
+                                <Input
+                                    type="text"
+                                    placeholder='Change Username'
+                                    onChange={(event) => {
+                                        this.setState({
+                                            userName: event.target.value
+                                        })
+                                    }}
+                                />
+                            </Popup>
+                            <Divider />
                             <Menu.Item>
                                 <Input
                                     type="text"
