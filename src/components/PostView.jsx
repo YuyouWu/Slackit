@@ -4,6 +4,8 @@ import axios from 'axios';
 import isImageUrl from 'is-image-url';
 import ReactPlayer from 'react-player'
 
+import CommentList from './CommentList';
+
 import profilePic0 from './../img/profilePic0.png'
 import profilePic1 from './../img/profilePic1.png'
 import profilePic2 from './../img/profilePic2.png'
@@ -45,6 +47,8 @@ class PostView extends React.Component {
                 loading: false,
                 postData: res.data[0].data.children[0].data,
                 commentData: res.data[1].data.children
+            }, () => {
+                console.log(this.state.commentData);
             })
         })
     }
@@ -128,7 +132,6 @@ class PostView extends React.Component {
             })
         } else return null;
     }
-
 
     componentDidUpdate(prevProps) {
         if (prevProps.title !== this.state.title) {
@@ -221,6 +224,9 @@ class PostView extends React.Component {
                         </Item.Content>
                     </Item>
                 </Item.Group>
+                {this.state.commentData &&
+                    <CommentList commentData={this.state.commentData} profilePicArr={profilePicArr} profilePicIdx={this.props.profilePicIdx}/>
+                }
             </div>
         )
     }
