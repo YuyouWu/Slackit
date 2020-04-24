@@ -48,9 +48,7 @@ class PostView extends React.Component {
                 loading: false,
                 postData: res.data[0].data.children[0].data,
                 commentData: res.data[1].data.children
-            }, () => {
-                console.log(this.state.commentData);
-            })
+            });
         })
     }
 
@@ -227,7 +225,7 @@ class PostView extends React.Component {
                 </Item.Group>
                 <Divider/>
                 {this.state.commentData &&
-                    <CommentList commentData={this.state.commentData}/>
+                    <CommentList commentData={this.state.commentData} level={0}/>
                 }
             </div>
         )

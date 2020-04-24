@@ -29,52 +29,61 @@ const profilePicArr = [
 class CommentList extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
+        this.state = {
+            level: props.level + 1
+        }
     }
 
     render() {
         return (
             <Item.Group>
                 {this.props.commentData.map((comment, i) => {
-                    return (
-                        <Item>
-                            <Item.Image
-                                style={{
-                                    height: 35,
-                                    width: 35,
-                                    marginTop: 5,
-                                    borderRadius: '10%',
-                                    overflow: 'hidden'
-                                }}
-                                src={profilePicArr[i % 9]}
-                            />
+                    if (comment.kind !== "more") {
+                        return (
+                            <Item>
+                                <Item.Image
+                                    style={{
+                                        height: 35,
+                                        width: 35,
+                                        marginTop: 5,
+                                        borderRadius: '10%',
+                                        overflow: 'hidden'
+                                    }}
+                                    src={profilePicArr[i % 9]}
+                                />
 
-                            <Item.Content>
-                                <Item.Meta
-                                    style={{
-                                        fontWeight: 'bold',
-                                        color: 'black'
-                                    }}
-                                >
-                                    {comment.data.author}
-                                </Item.Meta>
-                                <Item.Meta
-                                    style={{
-                                        color: 'black'
-                                    }}
-                                >
-                                    <div>
-                                        {ReactHtmlParser(ReactHtmlParser(comment.data['body_html']))}
-                                    </div>
-                                </Item.Meta>
-                                {/* {
-                                    comment && comment.data && comment.data.replies && comment.data.replies.data && comment.data.replies.data.children && (
-                                        <CommentList commentData={comment.data.replies.data.children} />
-                                    )
-                                } */}
-                            </Item.Content>
-                        </Item>
-                    )
+                                <Item.Content>
+                                    <Item.Meta
+                                        style={{
+                                            fontWeight: 'bold',
+                                            color: 'black'
+                                        }}
+                                    >
+                                        {comment.data.author}
+                                    </Item.Meta>
+                                    <Item.Meta
+                                        style={{
+                                            color: 'black'
+                                        }}
+                                    >
+                                        <div>
+                                            {ReactHtmlParser(ReactHtmlParser(comment.data['body_html']))}
+                                        </div>
+                                    </Item.Meta>
+                                    {this.state.level < 3 &&
+                                        comment &&
+                                        comment.data &&
+                                        comment.data.replies &&
+                                        comment.data.replies.data &&
+                                        comment.data.replies.data.children &&
+                                        (
+                                            <CommentList commentData={comment.data.replies.data.children} level={this.state.level} />
+                                        )
+                                    }
+                                </Item.Content>
+                            </Item>
+                        )
+                    }
                 })}
             </Item.Group>
         )
