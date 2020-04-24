@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Item, Image, Sticky, Loader, Dimmer } from 'semantic-ui-react';
+import { Button, Item, Image, Sticky, Loader, Dimmer, Divider } from 'semantic-ui-react';
 import axios from 'axios';
 import isImageUrl from 'is-image-url';
 import ReactPlayer from 'react-player'
+import ReactHtmlParser  from 'react-html-parser';
 
 import CommentList from './CommentList';
 
@@ -113,9 +114,9 @@ class PostView extends React.Component {
     renderText = () => {
         if (this.state.postData.selftext) {
             return (
-                <p>
-                    {this.state.postData.selftext}
-                </p>
+                <div>
+                    {ReactHtmlParser(ReactHtmlParser(this.state.postData['selftext_html']))}
+                </div>
             )
         }
     }
@@ -224,6 +225,7 @@ class PostView extends React.Component {
                         </Item.Content>
                     </Item>
                 </Item.Group>
+                <Divider/>
                 {this.state.commentData &&
                     <CommentList commentData={this.state.commentData} profilePicArr={profilePicArr} profilePicIdx={this.props.profilePicIdx}/>
                 }

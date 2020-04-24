@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Item, Image, Sticky, Loader, Dimmer } from 'semantic-ui-react';
+import { Item } from 'semantic-ui-react';
+import ReactHtmlParser  from 'react-html-parser';
 
 import profilePic0 from './../img/profilePic0.png'
 import profilePic1 from './../img/profilePic1.png'
@@ -62,7 +63,9 @@ class CommentList extends React.Component {
                                         color: 'black'
                                     }}
                                 >
-                                    <div dangerouslySetInnerHTML={{ __html: comment.data['body_html'] }} />
+                                    <div>
+                                        {ReactHtmlParser(ReactHtmlParser(comment.data['body_html']))}
+                                    </div>
                                 </Item.Meta>
                             </Item.Content>
 
