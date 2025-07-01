@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item } from 'semantic-ui-react';
+import { Item, Button } from 'semantic-ui-react';
 import parse from 'html-react-parser';
 
 import profilePic0 from './../img/profilePic0.png'
@@ -26,12 +26,28 @@ const profilePicArr = [
     profilePic9
 ]
 
+function decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+}
+
 class CommentList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            level: props.level + 1
+            level: props.level + 1,
+            expandedComments: {}
         }
+    }
+
+    handleExpand = (index) => {
+        this.setState((prevState) => ({
+            expandedComments: {
+                ...prevState.expandedComments,
+                [index]: true
+            }
+        }));
     }
 
     render() {
@@ -39,6 +55,8 @@ class CommentList extends React.Component {
             <Item.Group>
                 {this.props.commentData.map((comment, i) => {
                     if (comment.kind !== "more") {
+                        const hasReplies = comment && comment.data && comment.data.replies && comment.data.replies.data && comment.data.replies.data.children && comment.data.replies.data.children.length > 0;
+                        const isExpanded = this.state.expandedComments[i];
                         return (
                             <Item key={i}>
                                 <Item.Image
@@ -67,19 +85,18 @@ class CommentList extends React.Component {
                                         }}
                                     >
                                         <div>
-                                            {parse(comment.data['body_html'])}
+                                            {parse(decodeHtml(comment.data['body_html']))}
                                         </div>
                                     </Item.Meta>
-                                    {this.state.level < 3 &&
-                                        comment &&
-                                        comment.data &&
-                                        comment.data.replies &&
-                                        comment.data.replies.data &&
-                                        comment.data.replies.data.children &&
-                                        (
-                                            <CommentList commentData={comment.data.replies.data.children} level={this.state.level} />
-                                        )
-                                    }
+                                    {this.state.level < 3 && hasReplies && (
+                                        <CommentList commentData={comment.data.replies.data.children} level={this.state.level} />
+                                    )}
+                                    {this.state.level === 3 && hasReplies && !isExpanded && (
+                                        <Button onClick={() => this.handleExpand(i)} style={{marginTop: '8px'}}>Expand more replies</Button>
+                                    )}
+                                    {this.state.level === 3 && hasReplies && isExpanded && (
+                                        <CommentList commentData={comment.data.replies.data.children} level={this.state.level} />
+                                    )}
                                 </Item.Content>
                             </Item>
                         )
