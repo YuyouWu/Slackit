@@ -40,7 +40,7 @@ class CommentList extends React.Component {
                 {this.props.commentData.map((comment, i) => {
                     if (comment.kind !== "more") {
                         return (
-                            <Item>
+                            <Item key={i}>
                                 <Item.Image
                                     style={{
                                         height: 35,
@@ -84,6 +84,7 @@ class CommentList extends React.Component {
                             </Item>
                         )
                     }
+                    return null; // Return null for "more" comments
                 })}
             </Item.Group>
         )
