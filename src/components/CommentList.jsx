@@ -1,6 +1,6 @@
 import React from 'react';
 import { Item } from 'semantic-ui-react';
-import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';
 
 import profilePic0 from './../img/profilePic0.png'
 import profilePic1 from './../img/profilePic1.png'
@@ -67,7 +67,7 @@ class CommentList extends React.Component {
                                         }}
                                     >
                                         <div>
-                                            {ReactHtmlParser(ReactHtmlParser(comment.data['body_html']))}
+                                            {parse(comment.data['body_html'])}
                                         </div>
                                     </Item.Meta>
                                     {this.state.level < 3 &&
