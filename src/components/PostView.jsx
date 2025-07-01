@@ -177,7 +177,6 @@ class PostView extends React.Component {
                         </Item>
                     </div>
                 </Sticky>
-
                 <Item.Group>
                     <Item>
                         <Item.Image
