@@ -3,7 +3,7 @@ import { Button, Item, Image, Sticky, Loader, Dimmer, Divider } from 'semantic-u
 import axios from 'axios';
 import isImageUrl from 'is-image-url';
 import ReactPlayer from 'react-player'
-import ReactHtmlParser  from 'react-html-parser';
+import parse from 'html-react-parser';
 
 import CommentList from './CommentList';
 
@@ -113,7 +113,7 @@ class PostView extends React.Component {
         if (this.state.postData.selftext) {
             return (
                 <div>
-                    {ReactHtmlParser(ReactHtmlParser(this.state.postData['selftext_html']))}
+                    {parse(this.state.postData['selftext_html'])}
                 </div>
             )
         }
