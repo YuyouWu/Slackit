@@ -38,7 +38,8 @@ class PostList extends React.Component {
             postHint: '',
             loading: true,
             page: 0,
-            showPost: false
+            showPost: false,
+            postViewWidth: 600 // Default PostView width
         }
     }
 
@@ -80,6 +81,12 @@ class PostList extends React.Component {
         });
     }
 
+    updatePostViewWidth = (width) => {
+        this.setState({
+            postViewWidth: width
+        });
+    }
+
     componentDidMount() {
         this.getPostList();
     }
@@ -103,170 +110,184 @@ class PostList extends React.Component {
 
     render() {
         return (
-            <Grid>
-                <Grid.Row style={{ height: '100vh' }}>
-                    <Grid.Column width={this.state.showPost ? 10 : 16} style={{ paddingLeft: 0 }}>
-                        {this.state.loading &&
-                            <Dimmer active inverted>
-                                <Loader inverted />
-                            </Dimmer>
-                        }
-                        <div style={{ height: '100vh', overflow: 'auto' }}>
-                            <Sticky>
-                                <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC' }}>
-                                    <Item style={{ padding: 20 }}>
-                                        <Item.Content>
-                                            <Item.Meta
-                                                style={{
-                                                    fontWeight: 'bold',
-                                                    color: 'black'
-                                                }}
-                                            >
-                                                #{this.state.currentSub}
-                                            </Item.Meta>
-                                            <Item.Meta
-                                                style={{
-                                                    color: 'black',
-                                                    marginTop: 5
-                                                }}
-                                            >
-                                                {
-                                                    this.state.postsData && this.state.postsData[0] ?
-                                                        (
-                                                            <div>
-                                                                <Icon name="user outline" style={{ fontSize: 12, color: 'grey' }} />
-                                                                {this.state.postsData[0].data['subreddit_subscribers']}
-                                                            </div>
-                                                        )
-                                                        :
-                                                        null
-                                                }
-                                            </Item.Meta>
-                                        </Item.Content>
-                                    </Item>
-                                </div>
-                            </Sticky>
+            <div style={{ 
+                display: 'flex', 
+                height: '100vh',
+                width: '100%'
+            }}>
+                {/* PostList - will flex to fill remaining space */}
+                <div style={{ 
+                    flex: 1,
+                    minWidth: 0, // Allows flex item to shrink below content size
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                    {this.state.loading &&
+                        <Dimmer active inverted>
+                            <Loader inverted />
+                        </Dimmer>
+                    }
+                    <div style={{ height: '100vh', overflow: 'auto' }}>
+                        <Sticky>
+                            <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC' }}>
+                                <Item style={{ padding: 20 }}>
+                                    <Item.Content>
+                                        <Item.Meta
+                                            style={{
+                                                fontWeight: 'bold',
+                                                color: 'black'
+                                            }}
+                                        >
+                                            #{this.state.currentSub}
+                                        </Item.Meta>
+                                        <Item.Meta
+                                            style={{
+                                                color: 'black',
+                                                marginTop: 5
+                                            }}
+                                        >
+                                            {
+                                                this.state.postsData && this.state.postsData[0] ?
+                                                    (
+                                                        <div>
+                                                            <Icon name="user outline" style={{ fontSize: 12, color: 'grey' }} />
+                                                            {this.state.postsData[0].data['subreddit_subscribers']}
+                                                        </div>
+                                                    )
+                                                    :
+                                                    null
+                                            }
+                                        </Item.Meta>
+                                    </Item.Content>
+                                </Item>
+                            </div>
+                        </Sticky>
 
-                            <Item.Group style={{ paddingTop: 10 }}>
-                                {this.state.postsData ?
-                                    this.state.postsData.map((post, i) => {
-                                        const author = post.data.author;
-                                        const title = post.data.title
-                                        const permaLink = post.data.permalink;
-                                        const score = post.data.score;
-                                        const postHint = post.data['post_hint'];
-                                        const profilePicIdx = i % 9;
-                                        return (
-                                            <Item
-                                                key={i}
-                                                className="postTile"
+                        <Item.Group style={{ paddingTop: 10 }}>
+                            {this.state.postsData ?
+                                this.state.postsData.map((post, i) => {
+                                    const author = post.data.author;
+                                    const title = post.data.title
+                                    const permaLink = post.data.permalink;
+                                    const score = post.data.score;
+                                    const postHint = post.data['post_hint'];
+                                    const profilePicIdx = i % 9;
+                                    return (
+                                        <Item
+                                            key={i}
+                                            className="postTile"
+                                            style={{
+                                                paddingLeft: 20
+                                            }}
+                                            onClick={() => {
+                                                this.setState({
+                                                    permaLink: permaLink,
+                                                    title: title,
+                                                    author: author,
+                                                    postHint: postHint,
+                                                    profilePicIdx: profilePicIdx,
+                                                    showPost: true
+                                                });
+                                            }}
+                                        >
+                                            <Item.Image
                                                 style={{
-                                                    paddingLeft: 20
+                                                    height: 35,
+                                                    width: 35,
+                                                    marginTop: 5,
+                                                    borderRadius: '10%',
+                                                    overflow: 'hidden'
                                                 }}
-                                                onClick={() => {
-                                                    this.setState({
-                                                        permaLink: permaLink,
-                                                        title: title,
-                                                        author: author,
-                                                        postHint: postHint,
-                                                        profilePicIdx: profilePicIdx,
-                                                        showPost: true
-                                                    });
-                                                }}
-                                            >
-                                                <Item.Image
-                                                    style={{
-                                                        height: 35,
-                                                        width: 35,
-                                                        marginTop: 5,
-                                                        borderRadius: '10%',
-                                                        overflow: 'hidden'
-                                                    }}
-                                                    src={profilePicArr[profilePicIdx]}
-                                                />
-                                                <Item.Content>
-                                                    <Item.Meta>
-                                                        <p
-                                                            style={{
-                                                                display: 'inline',
-                                                                fontWeight: 'bold',
-                                                                color: 'black',
-                                                                marginRight:'5px'
-                                                            }}
-                                                        >
-                                                            {author}
-                                                        </p>
-                                                        {
-                                                            this.state.currentSub === 'all' &&
-                                                            <p style={{ display: 'inline' }}> {post.data['subreddit_name_prefixed']} </p>
-                                                        }
-                                                    </Item.Meta>
-                                                    <Item.Meta
+                                                src={profilePicArr[profilePicIdx]}
+                                            />
+                                            <Item.Content>
+                                                <Item.Meta>
+                                                    <p
                                                         style={{
-                                                            color: 'black'
+                                                            display: 'inline',
+                                                            fontWeight: 'bold',
+                                                            color: 'black',
+                                                            marginRight:'5px'
                                                         }}
                                                     >
-                                                        {title}
-                                                    </Item.Meta>
-                                                    <Item.Meta>
-                                                        {/* <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label> */}
-                                                        <Label basic size="tiny"><span role="img" aria-label="thumbs-up">👍</span> {score}</Label>
-                                                    </Item.Meta>
-                                                </Item.Content>
-                                            </Item>
-                                        )
-                                    })
-                                    : (
-                                        <p> You done goofed </p>
+                                                        {author}
+                                                    </p>
+                                                    {
+                                                        this.state.currentSub === 'all' &&
+                                                        <p style={{ display: 'inline' }}> {post.data['subreddit_name_prefixed']} </p>
+                                                    }
+                                                </Item.Meta>
+                                                <Item.Meta
+                                                    style={{
+                                                        color: 'black'
+                                                    }}
+                                                >
+                                                    {title}
+                                                </Item.Meta>
+                                                <Item.Meta>
+                                                    {/* <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label> */}
+                                                    <Label basic size="tiny"><span role="img" aria-label="thumbs-up">👍</span> {score}</Label>
+                                                </Item.Meta>
+                                            </Item.Content>
+                                        </Item>
                                     )
-                                }
-                                {this.state.page > 0 &&
-                                    <Button
-                                        style={{ marginBottom: 10, marginLeft: 20 }}
-                                        onClick={() => {
-                                            this.setState({
-                                                loading: true,
-                                                page: this.state.page - 1
-                                            });
-                                            this.getPrevPage();
-                                        }}
-                                    >
-                                        Prev Page
-                                </Button>
-                                }
-
+                                })
+                                : (
+                                    <p> You done goofed </p>
+                                )
+                            }
+                            {this.state.page > 0 &&
                                 <Button
                                     style={{ marginBottom: 10, marginLeft: 20 }}
                                     onClick={() => {
                                         this.setState({
                                             loading: true,
-                                            page: this.state.page + 1
+                                            page: this.state.page - 1
                                         });
-                                        this.getNextPage();
+                                        this.getPrevPage();
                                     }}
                                 >
-                                    Next Page
-                                </Button>
-                            </Item.Group>
+                                    Prev Page
+                            </Button>
+                            }
+
+                            <Button
+                                style={{ marginBottom: 10, marginLeft: 20 }}
+                                onClick={() => {
+                                    this.setState({
+                                        loading: true,
+                                        page: this.state.page + 1
+                                    });
+                                    this.getNextPage();
+                                }}
+                            >
+                                Next Page
+                            </Button>
+                        </Item.Group>
+                    </div>
+                </div>
+                
+                {/* PostView - will have fixed width when shown */}
+                {this.state.showPost && (
+                    <div style={{ 
+                        width: this.state.postViewWidth,
+                        flexShrink: 0 // Prevents PostView from shrinking
+                    }}>
+                        <div style={{ height: '100vh', overflow: 'auto' }}>
+                            <PostView
+                                closePostView={this.closePostView}
+                                permaLink={this.state.permaLink}
+                                currentSub={this.state.currentSub}
+                                title={this.state.title}
+                                author={this.state.author}
+                                postHint={this.state.postHint}
+                                profilePicIdx={this.state.profilePicIdx}
+                                onWidthChange={this.updatePostViewWidth}
+                            />
                         </div>
-                    </Grid.Column>
-                    {this.state.showPost &&
-                        <Grid.Column width={6} style={{ paddingLeft: 0 }}>
-                            <div style={{ height: '100vh', overflow: 'auto' }}>
-                                <PostView
-                                    closePostView={this.closePostView}
-                                    permaLink={this.state.permaLink}
-                                    currentSub={this.state.currentSub}
-                                    title={this.state.title}
-                                    author={this.state.author}
-                                    postHint={this.state.postHint}
-                                    profilePicIdx={this.state.profilePicIdx}
-                                />
-                            </div>
-                        </Grid.Column>
-                    }
-                </Grid.Row>
-            </Grid>
+                    </div>
+                )}
+            </div>
         )
     }
 }

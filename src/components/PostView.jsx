@@ -44,8 +44,13 @@ class PostView extends React.Component {
             postData: '',
             commentData: '',
             loading: true,
-            title: props.title
+            title: props.title,
+            width: 600, // Default width
+            isResizing: false,
+            startX: 0,
+            startWidth: 600
         }
+        this.resizeRef = React.createRef();
     }
 
     getPostData = () => {
@@ -62,8 +67,13 @@ class PostView extends React.Component {
         return (
             <div>
                 <Image
-                    fluid
                     src={this.state.postData.url}
+                    style={{
+                        maxWidth: '500px',
+                        maxHeight: '500px',
+                        width: 'auto',
+                        height: 'auto'
+                    }}
                 />
             </div>
         )
@@ -81,6 +91,8 @@ class PostView extends React.Component {
                 <ReactPlayer
                     url={this.state.postData.url}
                     controls={true}
+                    width="500px"
+                    height="300px"
                 />
             )
         }
@@ -91,8 +103,13 @@ class PostView extends React.Component {
             if (this.state.postData.media.oembed['provider_name'] !== "YouTube" && !this.state.postData.url.endsWith("gifv")) {
                 return (
                     <Image
-                        fluid
                         src={this.state.postData.media.oembed['thumbnail_url']}
+                        style={{
+                            maxWidth: '500px',
+                            maxHeight: '500px',
+                            width: 'auto',
+                            height: 'auto'
+                        }}
                     />
                 )
             }
@@ -103,6 +120,8 @@ class PostView extends React.Component {
                     <ReactPlayer
                         url={this.state.postData.preview['reddit_video_preview']['fallback_url']}
                         controls={true}
+                        width="500px"
+                        height="300px"
                     />
                 )
             }
@@ -125,9 +144,52 @@ class PostView extends React.Component {
         }
     }
 
-
     componentDidMount() {
         this.getPostData();
+        // Add global mouse event listeners for resizing
+        document.addEventListener('mousemove', this.handleMouseMove);
+        document.addEventListener('mouseup', this.handleMouseUp);
+    }
+
+    componentWillUnmount() {
+        // Clean up event listeners
+        document.removeEventListener('mousemove', this.handleMouseMove);
+        document.removeEventListener('mouseup', this.handleMouseUp);
+    }
+
+    handleMouseDown = (e) => {
+        e.preventDefault();
+        // Store the initial mouse position and current width when starting to resize
+        this.setState({ 
+            isResizing: true,
+            startX: e.clientX,
+            startWidth: this.state.width
+        });
+    }
+
+    handleMouseMove = (e) => {
+        if (this.state.isResizing) {
+            // Calculate the change in mouse position
+            const deltaX = this.state.startX - e.clientX;
+            // Apply the change to the starting width
+            const newWidth = this.state.startWidth + deltaX;
+            
+            // Set minimum and maximum width constraints
+            const minWidth = 300;
+            const maxWidth = window.innerWidth * 0.8;
+            
+            if (newWidth >= minWidth && newWidth <= maxWidth) {
+                this.setState({ width: newWidth });
+                // Notify parent component of width change
+                if (this.props.onWidthChange) {
+                    this.props.onWidthChange(newWidth);
+                }
+            }
+        }
+    }
+
+    handleMouseUp = () => {
+        this.setState({ isResizing: false });
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -149,7 +211,27 @@ class PostView extends React.Component {
 
     render() {
         return (
-            <div style={{ marginRight: 20 }}>
+            <div style={{ 
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                borderLeft: '1px solid #DCDCDC',
+                paddingLeft: '20px'
+            }}>
+                {/* Resize handle */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: -5,
+                        top: 0,
+                        bottom: 0,
+                        width: 10,
+                        cursor: 'col-resize',
+                        backgroundColor: 'transparent',
+                        zIndex: 1000
+                    }}
+                    onMouseDown={this.handleMouseDown}
+                />
                 <Sticky>
                     <div style={{ backgroundColor: 'white', borderBottom: '1px solid #DCDCDC' }}>
                         <Item style={{ padding: 20 }}>
