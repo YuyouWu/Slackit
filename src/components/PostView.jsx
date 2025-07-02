@@ -31,6 +31,12 @@ const profilePicArr = [
     profilePic9
 ]
 
+function decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+}
+
 class PostView extends React.Component {
     constructor(props) {
         super(props);
@@ -113,7 +119,7 @@ class PostView extends React.Component {
         if (this.state.postData.selftext) {
             return (
                 <div>
-                    {parse(this.state.postData['selftext_html'])}
+                    {parse(decodeHtml(this.state.postData['selftext_html']))}
                 </div>
             )
         }
