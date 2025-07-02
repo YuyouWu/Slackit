@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Grid, Label, Button, Dimmer, Loader, Icon, Sticky } from 'semantic-ui-react';
+import { Item, Label, Button, Dimmer, Loader, Icon, Sticky } from 'semantic-ui-react';
 import axios from 'axios';
 import PostView from './PostView';
 
