@@ -6,7 +6,6 @@ import {
   Sticky,
   Loader,
   Dimmer,
-  Divider,
 } from "semantic-ui-react";
 import axios from "axios";
 import isImageUrl from "is-image-url";
