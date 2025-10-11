@@ -52,7 +52,7 @@ class CommentList extends React.Component {
 
     render() {
         return (
-            <Item.Group>
+            <Item.Group style={{ backgroundColor: '#1D2229' }}>
                 {this.props.commentData.map((comment, i) => {
                     if (comment.kind !== "more") {
                         const hasReplies = comment && comment.data && comment.data.replies && comment.data.replies.data && comment.data.replies.data.children && comment.data.replies.data.children.length > 0;
@@ -74,14 +74,14 @@ class CommentList extends React.Component {
                                     <Item.Meta
                                         style={{
                                             fontWeight: 'bold',
-                                            color: 'black'
+                                            color: 'white'
                                         }}
                                     >
                                         {comment.data.author}
                                     </Item.Meta>
                                     <Item.Meta
                                         style={{
-                                            color: 'black'
+                                            color: 'white'
                                         }}
                                     >
                                         <div>

@@ -133,7 +133,7 @@ class SubredditList extends React.Component {
                   }}
                 />
               </Popup>
-              <Divider />
+              <Divider style={{ color: "grey" }}/>
               <Menu.Item>
                 <Input
                   type="text"
@@ -212,7 +212,7 @@ class SubredditList extends React.Component {
               </Menu.Item>
             </Menu>
           </Grid.Column>
-          <Grid.Column width={14} tyle={{ paddingLeft: 0 }}>
+          <Grid.Column width={14} style={{ paddingLeft: 0, paddingTop: 0 }}>
             <PostList currentSub={selectedSub} />
           </Grid.Column>
         </Grid.Row>
