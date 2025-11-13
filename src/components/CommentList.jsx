@@ -92,7 +92,16 @@ class CommentList extends React.Component {
                                         <CommentList commentData={comment.data.replies.data.children} level={this.state.level} />
                                     )}
                                     {this.state.level === 3 && hasReplies && !isExpanded && (
-                                        <Button onClick={() => this.handleExpand(i)} style={{marginTop: '8px'}}>Expand more replies</Button>
+                                        <Button
+                                            onClick={() => this.handleExpand(i)}
+                                            style={{
+                                                marginTop: '8px',
+                                                backgroundColor: '#272d36',
+                                                color: 'white'
+                                            }}
+                                        >
+                                            Expand
+                                        </Button>
                                     )}
                                     {this.state.level === 3 && hasReplies && isExpanded && (
                                         <CommentList commentData={comment.data.replies.data.children} level={this.state.level} />

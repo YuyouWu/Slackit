@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Item,
-  Image,
-  Sticky,
-  Loader,
-  Dimmer,
-} from "semantic-ui-react";
+import { Button, Item, Image, Sticky, Loader, Dimmer } from "semantic-ui-react";
 import axios from "axios";
 import isImageUrl from "is-image-url";
 import ReactPlayer from "react-player";
@@ -56,6 +49,7 @@ class PostView extends React.Component {
       isResizing: false,
       startX: 0,
       startWidth: 600,
+      showMedia: false,
     };
     this.resizeRef = React.createRef();
   }
@@ -167,16 +161,97 @@ class PostView extends React.Component {
 
   renderLink = () => {
     return (
-      <Button href={this.state.postData.url}>{this.state.postData.url}</Button>
+      <Button
+        href={this.state.postData.url}
+        style={{ backgroundColor: "#272d36", color: "white" }}
+      >
+        {this.state.postData.url}
+      </Button>
     );
   };
 
   renderText = () => {
     if (this.state.postData.selftext) {
       return (
-        <div>{parse(decodeHtml(this.state.postData["selftext_html"]))}</div>
+        <div
+          style={{
+            color: "white",
+          }}
+        >
+          {parse(decodeHtml(this.state.postData["selftext_html"]))}
+        </div>
       );
     }
+  };
+
+  hasMediaContent = () => {
+    const postData = this.state.postData;
+
+    if (!postData) {
+      return false;
+    }
+
+    const hasVideo =
+      postData["secure_media"] &&
+      postData["secure_media"]["reddit_video"] &&
+      postData["secure_media"]["reddit_video"]["hls_url"];
+
+    const hasYouTube =
+      postData.url &&
+      postData["secure_media"] &&
+      postData["secure_media"].type === "youtube.com";
+
+    const hasImage = postData.url && isImageUrl(postData.url);
+
+    const hasGifThumbnail =
+      postData.media &&
+      postData.media.oembed &&
+      postData.media.oembed["thumbnail_url"] &&
+      postData.media.oembed["provider_name"] !== "YouTube" &&
+      !(postData.url && postData.url.endsWith("gifv"));
+
+    const hasGifPreview =
+      postData.url &&
+      postData.url.endsWith("gifv") &&
+      postData.preview &&
+      postData.preview["reddit_video_preview"];
+
+    const hasExternalLink = postData.url && !postData.is_self;
+
+    return (
+      hasVideo ||
+      hasYouTube ||
+      hasImage ||
+      hasGifThumbnail ||
+      hasGifPreview ||
+      hasExternalLink
+    );
+  };
+
+  renderMediaContent = () => {
+    if (!this.state.showMedia) {
+      return null;
+    }
+
+    return (
+      <>
+        <div style={{ marginBottom: "8px" }}>
+          <Button
+            size="tiny"
+            onClick={this.handleHideMedia}
+            style={{ backgroundColor: "#272d36", color: "white" }}
+          >
+            Hide Media
+          </Button>
+        </div>
+        {this.renderPostVideo()}
+        {isImageUrl(this.state.postData.url) && this.renderPostImage()}
+        {this.renderGIF()}
+        {this.state.postData.url && !this.state.postData.is_self && (
+          <div style={{ marginTop: "8px" }}>{this.renderLink()}</div>
+        )}
+      </>
+    );
   };
 
   componentDidMount() {
@@ -227,6 +302,14 @@ class PostView extends React.Component {
     this.setState({ isResizing: false });
   };
 
+  handleShowMedia = () => {
+    this.setState({ showMedia: true });
+  };
+
+  handleHideMedia = () => {
+    this.setState({ showMedia: false });
+  };
+
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.title !== prevState.title) {
       return {
@@ -239,6 +322,7 @@ class PostView extends React.Component {
     if (prevProps.title !== this.state.title) {
       this.setState({
         loading: true,
+        showMedia: false,
       });
       this.getPostData();
     }
@@ -251,7 +335,6 @@ class PostView extends React.Component {
           width: "100%",
           height: "100%",
           position: "relative",
-          borderLeft: "1px solid #3b3b3b",
           paddingLeft: "20px",
           backgroundColor: "#1D2229",
         }}
@@ -341,11 +424,19 @@ class PostView extends React.Component {
                   <Loader inverted />
                 </Dimmer>
               )}
-              {this.renderPostVideo()}
-              {isImageUrl(this.state.postData.url) && this.renderPostImage()}
-              {this.renderGIF()}
               {this.renderText()}
-              <div>{this.renderLink()}</div>
+              {!this.state.loading &&
+                this.hasMediaContent() &&
+                !this.state.showMedia && (
+                  <Button
+                    size="tiny"
+                    onClick={this.handleShowMedia}
+                    style={{ backgroundColor: "#272d36", color: "white" }}
+                  >
+                    Show Media
+                  </Button>
+                )}
+              {this.renderMediaContent()}
             </Item.Content>
           </Item>
         </Item.Group>
