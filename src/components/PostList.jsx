@@ -145,7 +145,7 @@ class PostList extends React.Component {
           }}
         >
           {this.state.loading && (
-            <Dimmer active inverted>
+            <Dimmer active inverted style={{ backgroundColor: "#1D2229" }}>
               <Loader inverted />
             </Dimmer>
           )}
@@ -192,7 +192,14 @@ class PostList extends React.Component {
               </div>
             </Sticky>
 
-            <Item.Group style={{ paddingTop: 0, marginTop: 0, backgroundColor: "#1D2229", borderLeft: "1px solid #3b3b3b"}}>
+            <Item.Group
+              style={{
+                paddingTop: 0,
+                marginTop: 0,
+                backgroundColor: "#1D2229",
+                borderLeft: "1px solid #3b3b3b",
+              }}
+            >
               {this.state.postsData ? (
                 this.state.postsData.map((post, i) => {
                   const author = post.data.author;
@@ -248,7 +255,7 @@ class PostList extends React.Component {
                           {this.state.currentSub === "all" && (
                             <p style={{ display: "inline" }}>
                               {" "}
-                              {post.data["subreddit_name_prefixed"]}{" "}
+                              {post.data["subreddipt_name_prefixed"]}{" "}
                             </p>
                           )}
                         </Item.Meta>
@@ -265,10 +272,15 @@ class PostList extends React.Component {
                           }}
                         >
                           {/* <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label> */}
-                          <Label basic size="tiny">
-                            <span role="img" aria-label="thumbs-up">
-                              👍
-                            </span>{" "}
+                          <Label
+                            basic
+                            size="tiny"
+                            style={{
+                              backgroundColor: "#272d36",
+                              color: "white",
+                              border: "1px solid #3b3b3b",
+                            }}
+                          >
                             {score}
                           </Label>
                         </Item.Meta>
@@ -281,7 +293,12 @@ class PostList extends React.Component {
               )}
               {this.state.page > 0 && (
                 <Button
-                  style={{ marginBottom: 10, marginLeft: 20 }}
+                  style={{
+                    marginBottom: 10,
+                    marginLeft: 20,
+                    backgroundColor: "#272d36",
+                    color: "white",
+                  }}
                   onClick={() => {
                     this.setState({
                       loading: true,
@@ -295,7 +312,12 @@ class PostList extends React.Component {
               )}
 
               <Button
-                style={{ marginBottom: 10, marginLeft: 20 }}
+                style={{
+                  marginBottom: 10,
+                  marginLeft: 20,
+                  backgroundColor: "#272d36",
+                  color: "white",
+                }}
                 onClick={() => {
                   this.setState({
                     loading: true,
@@ -318,7 +340,14 @@ class PostList extends React.Component {
               flexShrink: 0, // Prevents PostView from shrinking
             }}
           >
-            <div style={{ height: "100vh", overflow: "auto" }}>
+            <div
+              style={{
+                height: "100vh",
+                overflow: "auto",
+                backgroundColor: "#1D2229",
+                borderLeft: "1px solid #3b3b3b",
+              }}
+            >
               <PostView
                 closePostView={this.closePostView}
                 permaLink={this.state.permaLink}
