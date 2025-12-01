@@ -6,6 +6,7 @@ import ReactPlayer from "react-player";
 import parse from "html-react-parser";
 
 import CommentList from "./CommentList";
+import MessageInput from "./MessageInput";
 
 import profilePic0 from "./../img/profilePic0.png";
 import profilePic1 from "./../img/profilePic1.png";
@@ -337,6 +338,8 @@ class PostView extends React.Component {
           position: "relative",
           paddingLeft: "20px",
           backgroundColor: "#1D2229",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         {/* Resize handle */}
@@ -391,58 +394,77 @@ class PostView extends React.Component {
             </Item>
           </div>
         </Sticky>
-        <Item.Group style={{ backgroundColor: "#1D2229" }}>
-          <Item>
-            <Item.Image
-              style={{
-                height: 35,
-                width: 35,
-                marginTop: 5,
-                borderRadius: "10%",
-                overflow: "hidden",
-              }}
-              src={profilePicArr[this.props.profilePicIdx]}
-            />
-            <Item.Content>
-              <Item.Meta
+        <div
+          style={{
+            flex: 1,
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Item.Group style={{ backgroundColor: "#1D2229" }}>
+            <Item>
+              <Item.Image
                 style={{
-                  fontWeight: "bold",
-                  color: "white",
+                  height: 35,
+                  width: 35,
+                  marginTop: 5,
+                  borderRadius: "10%",
+                  overflow: "hidden",
                 }}
-              >
-                {this.props.author}
-              </Item.Meta>
-              <Item.Meta
-                style={{
-                  color: "white",
-                }}
-              >
-                {this.props.title}
-              </Item.Meta>
-              {this.state.loading && (
-                <Dimmer active inverted>
-                  <Loader inverted />
-                </Dimmer>
-              )}
-              {this.renderText()}
-              {!this.state.loading &&
-                this.hasMediaContent() &&
-                !this.state.showMedia && (
-                  <Button
-                    size="tiny"
-                    onClick={this.handleShowMedia}
-                    style={{ backgroundColor: "#272d36", color: "white" }}
-                  >
-                    Show Media
-                  </Button>
+                src={profilePicArr[this.props.profilePicIdx]}
+              />
+              <Item.Content>
+                <Item.Meta
+                  style={{
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  {this.props.author}
+                </Item.Meta>
+                <Item.Meta
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  {this.props.title}
+                </Item.Meta>
+                {this.state.loading && (
+                  <Dimmer active inverted>
+                    <Loader inverted />
+                  </Dimmer>
                 )}
-              {this.renderMediaContent()}
-            </Item.Content>
-          </Item>
-        </Item.Group>
-        {this.state.commentData && (
-          <CommentList commentData={this.state.commentData} level={0} />
-        )}
+                {this.renderText()}
+                {!this.state.loading &&
+                  this.hasMediaContent() &&
+                  !this.state.showMedia && (
+                    <Button
+                      size="tiny"
+                      onClick={this.handleShowMedia}
+                      style={{ backgroundColor: "#272d36", color: "white" }}
+                    >
+                      Show Media
+                    </Button>
+                  )}
+                {this.renderMediaContent()}
+              </Item.Content>
+            </Item>
+          </Item.Group>
+          {this.state.commentData && (
+            <CommentList commentData={this.state.commentData} level={0} />
+          )}
+        </div>
+        <div
+          style={{
+            position: "sticky",
+            bottom: 0,
+            backgroundColor: "#1D2229",
+            borderTop: "1px solid #3b3b3b",
+          }}
+        >
+          <MessageInput placeholder={`Message #${this.props.currentSub}`} />
+        </div>
       </div>
     );
   }
