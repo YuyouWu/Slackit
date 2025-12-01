@@ -10,6 +10,7 @@ import {
 } from "semantic-ui-react";
 import axios from "axios";
 import PostView from "./PostView";
+import MessageInput from "./MessageInput";
 
 import profilePic0 from "./../img/profilePic0.png";
 import profilePic1 from "./../img/profilePic1.png";
@@ -142,6 +143,7 @@ class PostList extends React.Component {
             minWidth: 0, // Allows flex item to shrink below content size
             display: "flex",
             flexDirection: "column",
+            borderLeft: "1px solid #3b3b3b",
           }}
         >
           {this.state.loading && (
@@ -149,149 +151,183 @@ class PostList extends React.Component {
               <Loader inverted />
             </Dimmer>
           )}
-          <div style={{ height: "100vh", overflow: "auto" }}>
-            <Sticky>
-              <div
-                style={{
-                  backgroundColor: "#1D2229",
-                  borderBottom: "1px solid #3b3b3b",
-                }}
-              >
-                <Item style={{ padding: 20 }}>
-                  <Item.Content>
-                    <Item.Meta
-                      style={{
-                        fontWeight: "bold",
-                        color: "white",
-                      }}
-                    >
-                      #{this.state.currentSub}
-                    </Item.Meta>
-                    <Item.Meta
-                      style={{
-                        color: "white",
-                        marginTop: 5,
-                      }}
-                    >
-                      {this.state.postsData && this.state.postsData[0] ? (
-                        <div>
-                          <Icon
-                            name="user outline"
-                            style={{ fontSize: 12, color: "grey" }}
-                          />
-                          {
-                            this.state.postsData[0].data[
-                              "subreddit_subscribers"
-                            ]
-                          }
-                        </div>
-                      ) : null}
-                    </Item.Meta>
-                  </Item.Content>
-                </Item>
-              </div>
-            </Sticky>
-
-            <Item.Group
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              minHeight: 0,
+            }}
+          >
+            <div
               style={{
-                paddingTop: 0,
-                marginTop: 0,
-                backgroundColor: "#1D2229",
-                borderLeft: "1px solid #3b3b3b",
+                flex: 1,
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              {this.state.postsData ? (
-                this.state.postsData.map((post, i) => {
-                  const author = post.data.author;
-                  const title = post.data.title;
-                  const permaLink = post.data.permalink;
-                  const score = post.data.score;
-                  const postHint = post.data["post_hint"];
-                  const profilePicIdx = i % 9;
-                  return (
-                    <Item
-                      key={i}
-                      className="postTile"
-                      style={{
-                        paddingLeft: 20,
-                      }}
-                      onClick={() => {
-                        this.setState({
-                          permaLink: permaLink,
-                          title: title,
-                          author: author,
-                          postHint: postHint,
-                          profilePicIdx: profilePicIdx,
-                          showPost: true,
-                        });
-                      }}
-                    >
-                      <Item.Image
+              <Sticky>
+                <div
+                  style={{
+                    backgroundColor: "#1D2229",
+                    borderBottom: "1px solid #3b3b3b",
+                  }}
+                >
+                  <Item style={{ padding: 20 }}>
+                    <Item.Content>
+                      <Item.Meta
                         style={{
-                          height: 35,
-                          width: 35,
-                          marginTop: 5,
-                          borderRadius: "10%",
-                          overflow: "hidden",
+                          fontWeight: "bold",
+                          color: "white",
                         }}
-                        src={profilePicArr[profilePicIdx]}
-                      />
-                      <Item.Content>
-                        <Item.Meta
+                      >
+                        #{this.state.currentSub}
+                      </Item.Meta>
+                      <Item.Meta
+                        style={{
+                          color: "white",
+                          marginTop: 5,
+                        }}
+                      >
+                        {this.state.postsData && this.state.postsData[0] ? (
+                          <div>
+                            <Icon
+                              name="user outline"
+                              style={{ fontSize: 12, color: "grey" }}
+                            />
+                            {
+                              this.state.postsData[0].data[
+                                "subreddit_subscribers"
+                              ]
+                            }
+                          </div>
+                        ) : null}
+                      </Item.Meta>
+                    </Item.Content>
+                  </Item>
+                </div>
+              </Sticky>
+
+              <Item.Group
+                style={{
+                  paddingTop: 0,
+                  marginTop: 0,
+                  backgroundColor: "#1D2229",
+                  // borderLeft: "1px solid #3b3b3b",
+                }}
+              >
+                {this.state.postsData ? (
+                  this.state.postsData.map((post, i) => {
+                    const author = post.data.author;
+                    const title = post.data.title;
+                    const permaLink = post.data.permalink;
+                    const score = post.data.score;
+                    const postHint = post.data["post_hint"];
+                    const profilePicIdx = i % 9;
+                    return (
+                      <Item
+                        key={i}
+                        className="postTile"
+                        style={{
+                          paddingLeft: 20,
+                        }}
+                        onClick={() => {
+                          this.setState({
+                            permaLink: permaLink,
+                            title: title,
+                            author: author,
+                            postHint: postHint,
+                            profilePicIdx: profilePicIdx,
+                            showPost: true,
+                          });
+                        }}
+                      >
+                        <Item.Image
                           style={{
-                            color: "white",
+                            height: 35,
+                            width: 35,
+                            marginTop: 5,
+                            borderRadius: "10%",
+                            overflow: "hidden",
                           }}
-                        >
-                          <p
+                          src={profilePicArr[profilePicIdx]}
+                        />
+                        <Item.Content>
+                          <Item.Meta
                             style={{
-                              display: "inline",
-                              fontWeight: "bold",
                               color: "white",
-                              marginRight: "5px",
                             }}
                           >
-                            {author}
-                          </p>
-                          {this.state.currentSub === "all" && (
-                            <p style={{ display: "inline" }}>
-                              {" "}
-                              {post.data["subreddipt_name_prefixed"]}{" "}
+                            <p
+                              style={{
+                                display: "inline",
+                                fontWeight: "bold",
+                                color: "white",
+                                marginRight: "5px",
+                              }}
+                            >
+                              {author}
                             </p>
-                          )}
-                        </Item.Meta>
-                        <Item.Meta
-                          style={{
-                            color: "white",
-                          }}
-                        >
-                          {title}
-                        </Item.Meta>
-                        <Item.Meta
-                          style={{
-                            color: "white",
-                          }}
-                        >
-                          {/* <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label> */}
-                          <Label
-                            basic
-                            size="tiny"
+                            {this.state.currentSub === "all" && (
+                              <p style={{ display: "inline" }}>
+                                {" "}
+                                {post.data["subreddipt_name_prefixed"]}{" "}
+                              </p>
+                            )}
+                          </Item.Meta>
+                          <Item.Meta
                             style={{
-                              backgroundColor: "#272d36",
                               color: "white",
-                              border: "1px solid #3b3b3b",
                             }}
                           >
-                            {score}
-                          </Label>
-                        </Item.Meta>
-                      </Item.Content>
-                    </Item>
-                  );
-                })
-              ) : (
-                <p> You done goofed </p>
-              )}
-              {this.state.page > 0 && (
+                            {title}
+                          </Item.Meta>
+                          <Item.Meta
+                            style={{
+                              color: "white",
+                            }}
+                          >
+                            {/* <Label basic size="tiny"><Icon name="thumbs up outline"/> {score}</Label> */}
+                            <Label
+                              basic
+                              size="tiny"
+                              style={{
+                                backgroundColor: "#272d36",
+                                color: "white",
+                                border: "1px solid #3b3b3b",
+                              }}
+                            >
+                              {score}
+                            </Label>
+                          </Item.Meta>
+                        </Item.Content>
+                      </Item>
+                    );
+                  })
+                ) : (
+                  <p> You done goofed </p>
+                )}
+                {this.state.page > 0 && (
+                  <Button
+                    style={{
+                      marginBottom: 10,
+                      marginLeft: 20,
+                      backgroundColor: "#272d36",
+                      color: "white",
+                    }}
+                    onClick={() => {
+                      this.setState({
+                        loading: true,
+                        page: this.state.page - 1,
+                      });
+                      this.getPrevPage();
+                    }}
+                  >
+                    Prev Page
+                  </Button>
+                )}
+
                 <Button
                   style={{
                     marginBottom: 10,
@@ -302,33 +338,25 @@ class PostList extends React.Component {
                   onClick={() => {
                     this.setState({
                       loading: true,
-                      page: this.state.page - 1,
+                      page: this.state.page + 1,
                     });
-                    this.getPrevPage();
+                    this.getNextPage();
                   }}
                 >
-                  Prev Page
+                  Next Page
                 </Button>
-              )}
-
-              <Button
-                style={{
-                  marginBottom: 10,
-                  marginLeft: 20,
-                  backgroundColor: "#272d36",
-                  color: "white",
-                }}
-                onClick={() => {
-                  this.setState({
-                    loading: true,
-                    page: this.state.page + 1,
-                  });
-                  this.getNextPage();
-                }}
-              >
-                Next Page
-              </Button>
-            </Item.Group>
+              </Item.Group>
+            </div>
+            <div
+              style={{
+                position: "sticky",
+                bottom: 0,
+                backgroundColor: "#1D2229",
+                // borderTop: "1px solid #3b3b3b",
+              }}
+            >
+              <MessageInput placeholder={`Message #${this.state.currentSub}`} />
+            </div>
           </div>
         </div>
 
